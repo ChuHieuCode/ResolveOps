@@ -42,6 +42,7 @@
     <ProjectReference Include="..\..\src\Modules\ResolveOps.Modules.Tenancy\ResolveOps.Modules.Tenancy.csproj" />
     <ProjectReference Include="..\..\src\Modules\ResolveOps.Modules.Identity\ResolveOps.Modules.Identity.csproj" />
     <ProjectReference Include="..\..\src\Modules\ResolveOps.Modules.Integrations\ResolveOps.Modules.Integrations.csproj" />
+    <ProjectReference Include="..\..\src\Modules\ResolveOps.Modules.Ai\ResolveOps.Modules.Ai.csproj" />
   </ItemGroup>
 
 </Project>

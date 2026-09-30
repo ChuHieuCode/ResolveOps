@@ -31,6 +31,7 @@
     <ProjectReference Include="..\..\Modules\ResolveOps.Modules.Claims\ResolveOps.Modules.Claims.csproj" />
     <ProjectReference Include="..\..\Modules\ResolveOps.Modules.Notifications\ResolveOps.Modules.Notifications.csproj" />
     <ProjectReference Include="..\..\Modules\ResolveOps.Modules.Reporting\ResolveOps.Modules.Reporting.csproj" />
+    <ProjectReference Include="..\..\Modules\ResolveOps.Modules.Ai\ResolveOps.Modules.Ai.csproj" />
   </ItemGroup>
 
 </Project>

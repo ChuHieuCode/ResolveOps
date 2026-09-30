@@ -16,6 +16,7 @@
     <Project Path="src/Hosts/ResolveOps.Worker/ResolveOps.Worker.csproj" />
   </Folder>
   <Folder Name="/src/Modules/">
+    <Project Path="src/Modules/ResolveOps.Modules.Ai/ResolveOps.Modules.Ai.csproj" />
     <Project Path="src/Modules/ResolveOps.Modules.Audit/ResolveOps.Modules.Audit.csproj" />
     <Project Path="src/Modules/ResolveOps.Modules.Claims/ResolveOps.Modules.Claims.csproj" />
     <Project Path="src/Modules/ResolveOps.Modules.Documents/ResolveOps.Modules.Documents.csproj" />

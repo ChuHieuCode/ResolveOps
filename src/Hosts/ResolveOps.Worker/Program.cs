@@ -1,6 +1,7 @@
 using Quartz;
 using RabbitMQ.Client;
 using ResolveOps.Messaging;
+using ResolveOps.Modules.Ai;
 using ResolveOps.Modules.Documents;
 using ResolveOps.Modules.Exceptions;
 using ResolveOps.Modules.Notifications;
@@ -59,8 +60,9 @@ builder.Services.AddWorkflowModule();
 builder.Services.AddDocumentsModule(builder.Configuration);
 builder.Services.AddNotificationsModule(builder.Configuration);
 builder.Services.AddReportingModule(builder.Configuration);
+builder.Services.AddAiModule(builder.Configuration);
 
-// ── Messaging & Background Consumers (Phase 5, 6, 7, 13 & 14) ──────────────────────────────────
+// ── Messaging & Background Consumers (Phase 5, 6, 7, 13, 14 & 18) ──────────────────────────────────
 builder.Services.AddScoped<IOutboxWriter, OutboxWriter>();
 builder.Services.AddSingleton<RabbitMqPublisher>();
 builder.Services.AddHostedService<OutboxPublisherService>();
@@ -68,6 +70,7 @@ builder.Services.AddHostedService<ResolveOps.Worker.Consumers.TrackingIngestionC
 builder.Services.AddHostedService<ResolveOps.Worker.Consumers.ExceptionEvaluationConsumerService>();
 builder.Services.AddHostedService<ResolveOps.Worker.Consumers.NotificationConsumerService>();
 builder.Services.AddHostedService<ResolveOps.Worker.Consumers.ReportingProjectionConsumerService>();
+builder.Services.AddHostedService<ResolveOps.Worker.Consumers.AiProcessingConsumerService>();
 
 // ── Quartz.NET Scheduled Jobs (Phase 7, 8, 9 / spec §18.2, §24) ──────────────────────
 builder.Services.AddQuartz(q =>

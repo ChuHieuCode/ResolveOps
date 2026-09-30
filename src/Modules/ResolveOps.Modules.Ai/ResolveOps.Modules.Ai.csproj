@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\ResolveOps.Domain\ResolveOps.Domain.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\ResolveOps.Application\ResolveOps.Application.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\ResolveOps.Security\ResolveOps.Security.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\ResolveOps.Persistence\ResolveOps.Persistence.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\ResolveOps.Messaging\ResolveOps.Messaging.csproj" />
+    <ProjectReference Include="..\..\BuildingBlocks\ResolveOps.Observability\ResolveOps.Observability.csproj" />
+  </ItemGroup>
+
+</Project>

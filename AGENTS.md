@@ -20,10 +20,10 @@ and adds current phase status. When in conflict, the spec wins.
 
 | Field | Value |
 |---|---|
-| **Current phase** | Phase 16 — Performance, resilience, and security hardening |
+| **Current phase** | Phase 18 — AI assistance & RAG (Version 3 only) |
 | **Phase status** | ✅ Complete |
 | **Next phase** | Phase 17 — CI/CD and deployment |
-| **Last updated** | 2026-09-25 |
+| **Last updated** | 2026-09-30 |
 
 ### Phase 0 deliverables completed
 
@@ -165,8 +165,8 @@ The agent MUST NOT:
 | 14 | Reporting and carrier scorecards | ✅ Complete |
 | 15 | Frontend production workflow | ✅ Complete |
 | 16 | Performance, resilience, and security hardening | ✅ Complete |
-| 17 | CI/CD and deployment | ⬜ Not started |
-| 18 | AI assistance (Version 3 only) | ⬜ Not started |
+| 17 | CI/CD and deployment | ⬜ Next phase |
+| 18 | AI assistance & RAG (Version 3 only) | ✅ Complete |
 
 ---
 

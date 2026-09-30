@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using ResolveOps.Api;
 using ResolveOps.Api.Infrastructure;
 using ResolveOps.Domain.Identity;
+using ResolveOps.Modules.Ai;
 using ResolveOps.Modules.Claims;
 using ResolveOps.Modules.Documents;
 using ResolveOps.Modules.Exceptions;
@@ -130,6 +131,7 @@ builder.Services.AddDocumentsModule(builder.Configuration);
 builder.Services.AddClaimsModule();
 builder.Services.AddNotificationsModule(builder.Configuration);
 builder.Services.AddReportingModule(builder.Configuration);
+builder.Services.AddAiModule(builder.Configuration);
 
 builder.Services.AddScoped<ResolveOps.Application.IErrorMessageProvider, ResolveOps.Persistence.Services.DatabaseErrorMessageProvider>();
 builder.Services.AddScoped<ResolveOps.Application.Idempotency.IIdempotencyStore, ResolveOps.Persistence.Services.EfCoreIdempotencyStore>();
@@ -172,8 +174,8 @@ if (app.Environment.IsDevelopment())
 app.MapGet("/api/version", () => new
 {
     Product = "ResolveOps",
-    Phase = "15",
-    Description = "Frontend production workflow",
+    Phase = "18",
+    Description = "AI assistance and RAG knowledge retrieval",
     BuildTimestamp = DateTime.UtcNow.ToString("O"),
 })
 .WithName("GetVersion")
@@ -192,6 +194,7 @@ app.MapDocumentsEndpoints();
 app.MapClaimsEndpoints();
 app.MapNotificationsEndpoints();
 app.MapReportingEndpoints();
+app.MapAiEndpoints();
 
 // ─────────────────────────────────────────────────────────────────────────
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ResolveOps.Domain;
+using ResolveOps.Domain.Ai;
 using ResolveOps.Domain.Claims;
 using ResolveOps.Domain.Documents;
 using ResolveOps.Domain.Exceptions;
@@ -116,6 +117,11 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
     // ── Reporting (Phase 14) ──────────────────────────────────────────────────
     public DbSet<ExportRequest> ExportRequests => Set<ExportRequest>();
     public DbSet<CarrierPerformanceSnapshot> CarrierPerformanceSnapshots => Set<CarrierPerformanceSnapshot>();
+
+    // ── AI & RAG (Phase 18) ───────────────────────────────────────────────────
+    public DbSet<AiTask> AiTasks => Set<AiTask>();
+    public DbSet<AiFeedback> AiFeedbacks => Set<AiFeedback>();
+    public DbSet<AiKnowledgeEmbedding> AiKnowledgeEmbeddings => Set<AiKnowledgeEmbedding>();
 
     // ── Messaging (Phase 5) ───────────────────────────────────────────────────
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
@@ -316,6 +322,16 @@ public sealed class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRo
 
         builder.Entity<CarrierPerformanceSnapshot>()
             .HasQueryFilter(c => _currentTenantId == null || c.TenantId == _currentTenantId);
+
+        // AI & RAG — tenant-scoped (Phase 18)
+        builder.Entity<AiTask>()
+            .HasQueryFilter(t => _currentTenantId == null || t.TenantId == _currentTenantId);
+
+        builder.Entity<AiFeedback>()
+            .HasQueryFilter(f => _currentTenantId == null || f.TenantId == _currentTenantId);
+
+        builder.Entity<AiKnowledgeEmbedding>()
+            .HasQueryFilter(k => _currentTenantId == null || k.TenantId == _currentTenantId);
 
 
 

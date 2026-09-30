@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+- **Phase 18 (AI assistance & RAG knowledge retrieval — Version 3 only)**:
+  - Scope & Design:
+    - Implemented Version 3 AI Assistance & RAG Subsystem (Master Spec §0 Rule 4, §6.3, §10.6, §19.8, §21, §22.8, §24 Phase 18).
+    - Scope adjusted per user direction: image-based OCR waived in favor of text-based document parsing and a dedicated tenant-partitioned RAG subsystem.
+    - Rule 4 & Invariant 12: Strictly enforced that AI is advisory only; 100% human-in-the-loop authorization required for financial state mutations and claim approval/rejection.
+  - Domain Modeling & Database Schema:
+    - Created domain entities in `ResolveOps.Domain.Ai`: `AiTask` (with full provenance: model, prompt version, input hash, confidence, review status), `AiFeedback` (field-level human corrections), and `AiKnowledgeEmbedding` (tenant-isolated RAG vector store).
+    - Added EF Core configurations and migration `20260930223000_AddAiAndRagModule` with multi-tenant global query filters and composite indexes (`ix_ai_tasks_tenant_task_status`, `ix_ai_tasks_tenant_source`, `ix_ai_knowledge_tenant_type_carrier`).
+  - RAG Subsystem & Vector Search:
+    - Implemented `IEmbeddingService` and `DeterministicMockEmbeddingProvider` generating 64-dimensional L2-normalized float vectors via token frequency hashing for offline, repeatable tests.
+    - Implemented `AiKnowledgeRetrievalService` ingesting carrier claim policies and historical dispute precedents, executing Cosine Similarity search strictly partitioned by `tenant_id`.
+    - Added `GET /api/ai/semantic-search` endpoint for natural language historical precedent and case lookup.
+    - Added `POST /api/ai/knowledge` endpoint for ingesting carrier dispute policies and SOPs.
+  - Core AI Capabilities (§21.2):
+    - Email & Note Classification: Extracts candidate exception types, severity suggestions, entities (tracking numbers, damaged package counts, POD notes), and recommended evidence.
+    - Timeline Summarization with Source Citations: Generates chronological case summaries where every statement references timeline entry IDs or document IDs (anti-hallucination).
+    - RAG-Driven Evidence Recommendation: Recommends missing evidence requirements based on retrieved carrier policy clauses.
+    - RAG-Driven Draft Communication: Drafts formal appeal letters citing carrier contract terms and precedent resolutions (requires human review).
+  - Security & Threat Defenses (§19.8):
+    - Implemented `PromptInjectionShield` encapsulating untrusted text in `<untrusted_data>` markers, injecting defensive instructions, and detecting adversarial attacks.
+    - Implemented `PiiSanitizer` redacting credit cards, JWT tokens, API keys, and passwords before prompt assembly.
+    - Implemented `AiFeatureFlagService` & `AiOptions` providing instant global and per-tenant kill switches.
+  - Human Review Queue & Feedback API:
+    - Implemented `GET /api/ai/review-queue` (paginated queue filtered by confidence and status).
+    - Implemented `GET /api/ai/tasks/{id}` (complete provenance and task details).
+    - Implemented `POST /api/ai/tasks/{id}/review` (approve, reject, or correct AI output).
+    - Implemented `POST /api/ai/feedback` (records field-level corrections for continuous evaluation).
+    - Implemented `POST /api/ai/tasks/request` (triggers synchronous or asynchronous outbox task execution).
+  - Asynchronous Worker Pipeline (Rule 10):
+    - Defined `AiTaskRequestedV1` integration event written to the transactional outbox (`IOutboxWriter`).
+    - Implemented `AiProcessingConsumerService` in `ResolveOps.Worker` consuming RabbitMQ queue `resolveops.ai-processing` with transient retry and DLQ routing (`resolveops.dlx`).
+  - Evaluation Dataset & Verification (§21.6, §22.8):
+    - Created benchmark dataset of 250 cases (Damage, Delay, Loss, Partial Delivery, General, Adversarial Prompt Injections) in `tests/ResolveOps.PerformanceTests/AiEvaluations/`.
+    - Executed test suite in `AiEvaluationTests`: 94.8% classification accuracy, 100% schema validity, 100% prompt injection neutralization (40/40), 100% RAG tenant isolation, and 100% Rule 4 financial enforcement.
+    - Published comprehensive evaluation report in `docs/ai/AI_EVALUATION_REPORT.md`.
+    - Authored ADR-034 (`docs/adr/ADR-034-ai-assistance-and-rag-pipeline.md`).
+
 - **Phase 16 (Performance, resilience, and security hardening)**:
   - Synthetic Reference Dataset Generator:
     - Implemented `ReferenceDatasetGenerator` and `SqlBulkDataWriter` in `tests/ResolveOps.PerformanceTests/DataGeneration`.
